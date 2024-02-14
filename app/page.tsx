@@ -29,12 +29,12 @@ export type user = {
   __v?: number;
   username?: string;
 };
-export const images: string[] = [
-  image1.src,
-  image2.src,
-  image3.src,
-  image4.src,
-];
+// export const images: string[] = [
+//   image1.src,
+//   image2.src,
+//   image3.src,
+//   image4.src,
+// ];
 export default function Home() {
   const [tweets, setTweets] = useState<TweetProps[]>([]);
   const { token, user } = useAuth();
