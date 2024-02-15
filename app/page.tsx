@@ -43,7 +43,7 @@ export default function Home() {
     tweetTime: new Date().toUTCString(),
     user: user && user,
     content: "",
-    images: [],
+    // images: [],
   });
   const router = useRouter();
   useEffect(() => {
