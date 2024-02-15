@@ -13,7 +13,8 @@ const AuthContext = createContext<any>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [user, setUser] = useState<user | null>(JSON.parse(localStorage.getItem("user")) || null);
+  const userString = localStorage.getItem('user')
+  const [user, setUser] = useState<user |  null>(userString !==null && JSON.parse(userString) || null);
   return (
     <AuthContext.Provider value={{ token, setToken, user, setUser }}>
       {children}
