@@ -18,10 +18,10 @@ const Signin = () => {
     email: "",
     password: "",
   });
-    const { token, setToken, setUser } = useAuth();
+  const { token, setToken, setUser } = useAuth();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const router = useRouter()
+  const router = useRouter();
   const handleOnChange = (e: any) => {
     const { name, value } = e.target;
     setUserData((prevVals) => ({ ...prevVals, [name]: value }));
@@ -32,19 +32,19 @@ const Signin = () => {
       .post(`${apiUrl}/auth/signin`, userData)
       .then((response) => {
         console.log(response);
-        if(response.status===200){
-          let token = response?.data?.token
-          localStorage.setItem('token', token)
-          setToken(token)
-          localStorage.setItem('user', JSON.stringify(response.data.data))
-          setUser(response?.data?.data)
-        toast(response?.data?.message || response?.data?.message, {
-        });
-        setTimeout(() => {
-          router.push('/')
-        }, 2000);
-      }
-
+        if (response.status === 200) {
+          let token = response?.data?.token;
+          if (typeof window !== "undefined") {
+            localStorage.setItem("token", token);
+            setToken(token);
+            localStorage.setItem("user", JSON.stringify(response.data.data));
+          }
+          setUser(response?.data?.data);
+          toast(response?.data?.message || response?.data?.message, {});
+          setTimeout(() => {
+            router.push("/");
+          }, 2000);
+        }
       })
       .catch((err) => {
         console.log(err);
