@@ -19,7 +19,7 @@ export interface TweetProps {
   tweetTime?: string;
   user: user;
   content: string;
-  images?: string[] | undefined;
+  // images?: string[] | undefined;
   likedBy?: string[];
 }
 export type user = {
