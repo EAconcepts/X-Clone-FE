@@ -83,7 +83,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
           <div className="w-full px-[32px] pb-[8px]">
             {/* Images */}
             <div className="mt-[12px] grid grid-cols-2 place-items-center gap-[4px] border-[1px]  w-fit rounded-[16px] overflow-hidden justify-center">
-              {tweet.images &&
+              {/* {tweet.images &&
                 tweet.images?.map((img: string, index: number) => (
                   <Image
                     key={index}
@@ -93,7 +93,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
                     width={50}
                     className="w-[200px] h-[120px] object-cover"
                   />
-                ))}
+                ))} */}
             </div>
             <div className="w-full flex text-[10px] xl:text-[12px] justify-between mt-[16px]">
               <div className="flex gap-x-[5px] items-center cursor-pointer">
