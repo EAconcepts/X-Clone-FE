@@ -21,7 +21,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
- const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [hasLiked, setHasLiked] = useState<boolean>(false);
   const checkLike = () => {
     tweet.likedBy &&
@@ -33,10 +33,9 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
         }
       });
   };
-  useEffect(()=>{
-
-    checkLike()
-  },[])
+  useEffect(() => {
+    checkLike();
+  }, []);
   const handlePostLike = (postId: string) => {
     axios
       .post(`${apiUrl}/post/likes/${postId}`, "", { headers })
@@ -44,10 +43,8 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
         console.log(response);
         if (response.status == 200) {
           if (response.data.message.includes("Liked")) {
-            
             setHasLiked(true);
           } else if (response.data.message.includes("Unliked")) {
-            
             setHasLiked(false);
           }
           toast.success(response.data.message);
@@ -83,7 +80,8 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
           <div className="w-full px-[32px] pb-[8px]">
             {/* Images */}
             <div className="mt-[12px] grid grid-cols-2 place-items-center gap-[4px] border-[1px]  w-fit rounded-[16px] overflow-hidden justify-center">
-              {tweet?.images && tweet?.images?.length > 0 &&
+              {tweet?.images &&
+                tweet?.images?.length > 0 &&
                 tweet?.images?.map((img: string, index: number) => (
                   <Image
                     key={index}
@@ -113,7 +111,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
                 ) : (
                   <FaRegHeart />
                 )}
-                <span>2.7k</span>
+                <span> {tweet.likedBy?.length}</span>
               </div>
               <div className="flex gap-x-[5px] items-center cursor-pointer">
                 <FaRetweet />
