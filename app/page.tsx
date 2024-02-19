@@ -19,7 +19,7 @@ export interface TweetProps {
   tweetTime?: string;
   user: user;
   content: string;
-  // images?: string[] | undefined;
+  images?: string[] | undefined;
   likedBy?: string[];
 }
 export type user = {
@@ -38,40 +38,29 @@ export default function Home() {
     tweetTime: new Date().toUTCString(),
     user: user && user,
     content: "",
-    // images: [],
+    images: [],
   });
   const router = useRouter();
   useEffect(() => {
     if (!token) {
       router.push("/auth/signin");
     }
-    // getAllPosts();
   }, []);
-  const getAllPosts = () => {
-    axios
-      .get(`http://localhost:7000/api/post`)
-      .then((response) => {
-        console.log(response);
-        let data = response.data.data;
-        setTweets(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const { data, error, isFetching } = useQuery({
     queryKey: ["allPosts"],
+    // queryFn: () => axios.get(`${apiUrl}/post`),
     queryFn: () => axios.get(`${apiUrl}/post`),
   });
-
-  if (isFetching) {
-    return (
-      <p className="fixed top-[50%] left-[50%] m-auto">
-        loading<span className="animate-pulse">...</span>
-      </p>
-    );
-  }
+  // console.log(data)
+  // if (isFetching) {
+  //   return (
+  //     <p className="fixed top-[50%] left-[50%] m-auto">
+  //       loading<span className="animate-pulse">...</span>
+  //     </p>
+  //   );
+  // }
   if (error) {
     console.log(error);
     return (

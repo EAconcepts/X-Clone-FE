@@ -21,7 +21,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
- 
+ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [hasLiked, setHasLiked] = useState<boolean>(false);
   const checkLike = () => {
     tweet.likedBy &&
@@ -39,7 +39,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   },[])
   const handlePostLike = (postId: string) => {
     axios
-      .post(`http://localhost:7000/api/post/likes/${postId}`, "", { headers })
+      .post(`${apiUrl}/post/likes/${postId}`, "", { headers })
       .then((response) => {
         console.log(response);
         if (response.status == 200) {
@@ -83,17 +83,17 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
           <div className="w-full px-[32px] pb-[8px]">
             {/* Images */}
             <div className="mt-[12px] grid grid-cols-2 place-items-center gap-[4px] border-[1px]  w-fit rounded-[16px] overflow-hidden justify-center">
-              {/* {tweet.images &&
-                tweet.images?.map((img: string, index: number) => (
+              {tweet?.images && tweet?.images?.length > 0 &&
+                tweet?.images?.map((img: string, index: number) => (
                   <Image
                     key={index}
                     src={img}
                     alt={"img"}
-                    height={50}
-                    width={50}
+                    height={300}
+                    width={300}
                     className="w-[200px] h-[120px] object-cover"
                   />
-                ))} */}
+                ))}
             </div>
             <div className="w-full flex text-[10px] xl:text-[12px] justify-between mt-[16px]">
               <div className="flex gap-x-[5px] items-center cursor-pointer">
