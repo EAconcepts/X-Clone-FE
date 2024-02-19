@@ -54,14 +54,16 @@ const Signin = () => {
     console.log(userData);
   };
   return (
-    <main className="w-full h-screen bg-slate-100 flex flex-col justify-center items-center">
+    <main className="w-full h-screen text-white bg-black flex flex-col justify-center items-center">
       <Toaster />
-      <div className="max-w-[70%] w-[50%] flex bg-white p-[32px]">
+      <div className="max-w-[70%] w-[50%] flex bg-black/80 border rounded-lg shadow-md shadow-slate-800 p-[32px]">
         <form
           onSubmit={handleSignin}
-          className=" w-full flex flex-col items-center text-black p-4 gap-y-[16px]"
+          className=" w-full flex flex-col items-center text-white p-4 gap-y-[16px]"
         >
-          <h2 className="text-[18px] mb-[12px]">Sign in to your acoount</h2>
+          <h2 className="text-[20px] mb-[12px]  font-bold">
+            Login to your acoount
+          </h2>
           <input
             type="email"
             placeholder="Email"
@@ -80,9 +82,15 @@ const Signin = () => {
             onChange={handleOnChange}
             required
           />
-          <button className="mt-[18px] bg-blue-400 py-[4px] px-[24px]">
+          <button className="mt-[18px] rounded-md border bg-transparent py-[4px] px-[24px]">
             Sign in
           </button>
+          <div className="text-white flex gap-x-[2px] text-[14px]">
+            <span>Don't have an account?</span>
+            <Link href={"/auth/signup"} className="text-blue-400 underline">
+              Sign up
+            </Link>
+          </div>
         </form>
       </div>
     </main>

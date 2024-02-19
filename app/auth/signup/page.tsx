@@ -10,14 +10,14 @@ interface UserProps {
   name?: string;
   email: string;
   password: string;
-  username?: string
+  username?: string;
 }
 const Signup = () => {
   const [user, setUser] = useState<UserProps>({
     name: "",
     email: "",
     password: "",
-    username: ""
+    username: "",
   });
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -28,32 +28,33 @@ const Signup = () => {
   };
   const handleSignup = (e: any) => {
     e.preventDefault();
-    axios.post(`${apiUrl}/auth/signup`, user)
-    .then((response)=>{
-        console.log(response)
+    axios
+      .post(`${apiUrl}/auth/signup`, user)
+      .then((response) => {
+        console.log(response);
         toast(response?.data?.message || response?.data?.message);
-    })
-    .catch(err=>{
-        console.log(err)
-        toast.error(err.response?.data?.message || err?.message)
-    })
-    
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response?.data?.message || err?.message);
+      });
+
     console.log(user);
   };
   return (
-    <main className="w-full h-screen bg-slate-100 flex flex-col justify-center items-center">
+    <main className="w-full h-screen bg-black flex flex-col justify-center items-center">
       <Toaster />
-      <div className="max-w-[70%] w-[50%] flex bg-white p-[32px]">
+      <div className="max-w-[70%] w-[50%] border rounded-lg  flex bg-black p-[32px] shadow-md shadow-slate-900">
         <form
           onSubmit={handleSignup}
-          className=" w-full flex flex-col items-center text-black p-4 gap-y-[16px]"
+          className=" w-full flex flex-col items-center text-white p-4 gap-y-[16px] "
         >
-          <h2 className="text-[18px] mb-[12px]">Create an acoount</h2>
+          <h2 className="mb-[12px] text-[20px] font-bold">Create an account</h2>
           <input
             type="text"
             placeholder="Name"
             name="name"
-            className={`w-[50%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.name}
             onChange={handleOnChange}
             required
@@ -62,7 +63,7 @@ const Signup = () => {
             type="email"
             placeholder="Email"
             name="email"
-            className={`w-[50%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.email}
             onChange={handleOnChange}
             required
@@ -71,7 +72,7 @@ const Signup = () => {
             type="username"
             placeholder="username"
             name="username"
-            className={`w-[50%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.username}
             onChange={handleOnChange}
             required
@@ -80,14 +81,20 @@ const Signup = () => {
             type="password"
             placeholder="Password"
             name="password"
-            className={`w-[50%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.password}
             onChange={handleOnChange}
             required
           />
-          <button className="mt-[18px] bg-blue-400 py-[4px] px-[24px]">
+          <button className="mt-[18px] border rounded-lg bg-transparent py-[4px] px-[28px]">
             Sign up
           </button>
+          <div className="text-white flex gap-x-[2px] text-[14px]">
+            <span>Already have an account?</span>
+            <Link href={"/auth/signin"} className="text-blue-400 underline">
+              Sign in
+            </Link>
+          </div>
         </form>
       </div>
     </main>
