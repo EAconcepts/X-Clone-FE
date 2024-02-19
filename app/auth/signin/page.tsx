@@ -86,7 +86,7 @@ const Signin = () => {
             Sign in
           </button>
           <div className="text-white flex gap-x-[2px] text-[14px]">
-            <span>Don't have an account?</span>
+            <span>Don&apos;t have an account?</span>
             <Link href={"/auth/signup"} className="text-blue-400 underline">
               Sign up
             </Link>
