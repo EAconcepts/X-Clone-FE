@@ -68,7 +68,7 @@ const Signin = () => {
             type="email"
             placeholder="Email"
             name="email"
-            className={`w-[50%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[50%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={userData.email}
             onChange={handleOnChange}
             required
@@ -77,7 +77,7 @@ const Signin = () => {
             type="password"
             placeholder="Password"
             name="password"
-            className={`w-[50%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[50%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={userData.password}
             onChange={handleOnChange}
             required

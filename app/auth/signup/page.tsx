@@ -54,7 +54,7 @@ const Signup = () => {
             type="text"
             placeholder="Name"
             name="name"
-            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.name}
             onChange={handleOnChange}
             required
@@ -63,7 +63,7 @@ const Signup = () => {
             type="email"
             placeholder="Email"
             name="email"
-            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.email}
             onChange={handleOnChange}
             required
@@ -72,7 +72,7 @@ const Signup = () => {
             type="username"
             placeholder="username"
             name="username"
-            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.username}
             onChange={handleOnChange}
             required
@@ -81,7 +81,7 @@ const Signup = () => {
             type="password"
             placeholder="Password"
             name="password"
-            className={`w-[60%] h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.password}
             onChange={handleOnChange}
             required
