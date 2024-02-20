@@ -18,12 +18,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      console.log('not undefined')
       let userString = localStorage.getItem("user");
-      let token = localStorage.getItem("token");
-      setToken(token);
+      let tkn = localStorage.getItem("token");
+      console.log(tkn)
+      setToken(tkn);
       setUser(userString !== null && JSON.parse(userString));
     }
-  }, );
+  },[] );
   return (
     <AuthContext.Provider value={{ token, setToken, user, setUser }}>
       {children}

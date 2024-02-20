@@ -1,5 +1,6 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
@@ -26,21 +27,23 @@ const Signup = () => {
     const { name, value } = e.target;
     setUser((prevVals) => ({ ...prevVals, [name]: value }));
   };
-  const handleSignup = (e: any) => {
-    e.preventDefault();
-    axios
-      .post(`${apiUrl}/auth/signup`, user)
-      .then((response) => {
-        console.log(response);
-        toast(response?.data?.message || response?.data?.message);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response?.data?.message || err?.message);
-      });
+ 
 
-    console.log(user);
-  };
+  const { data, mutate, isPending } = useMutation({
+    mutationFn: () => axios.post(`${apiUrl}/auth/signup`, user),
+    onSuccess: (data)=>{
+      console.log(data)
+        toast(data?.data?.message || data?.data?.message);
+    },
+    onError:(error:any)=>{
+      console.log(error)
+        toast.error(error.response?.data?.message || error?.message);
+    }
+  });
+   const handleSignup = (e: any) => {
+     e.preventDefault();
+     mutate();
+   };
   return (
     <main className="w-full h-screen bg-black flex flex-col justify-center items-center">
       <Toaster />
@@ -69,7 +72,7 @@ const Signup = () => {
             required
           />
           <input
-            type="username"
+            type="text"
             placeholder="username"
             name="username"
             className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
@@ -87,7 +90,7 @@ const Signup = () => {
             required
           />
           <button className="mt-[18px] border rounded-lg bg-transparent py-[4px] px-[28px]">
-            Sign up
+            {isPending ? "Signing up..." : "Sign up"}
           </button>
           <div className="text-white flex gap-x-[2px] text-[14px]">
             <span>Already have an account?</span>

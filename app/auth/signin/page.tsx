@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/app/(helpers)/authContext";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,32 +27,33 @@ const Signin = () => {
     const { name, value } = e.target;
     setUserData((prevVals) => ({ ...prevVals, [name]: value }));
   };
+  
+  const {isPending, mutate} = useMutation({
+    mutationFn: ()=> axios.post(`${apiUrl}/auth/signin`, userData),
+    onSuccess:(data)=>{
+       if (data.status === 200) {
+         let token = data?.data?.token;
+         if (typeof window !== "undefined") {
+           localStorage.setItem("token", token);
+           setToken(token);
+           localStorage.setItem("user", JSON.stringify(data.data.data));
+         }
+         setUser(data?.data?.data);
+         toast(data?.data?.message || data?.data?.message, {});
+         setTimeout(() => {
+           router.push("/");
+         }, 1000);
+       }
+    },
+    onError:(error:any, variables, context)=> {
+        toast.error(error.response?.data?.message || error?.message);
+      
+    },
+
+  })
   const handleSignin = (e: any) => {
     e.preventDefault();
-    axios
-      .post(`${apiUrl}/auth/signin`, userData)
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          let token = response?.data?.token;
-          if (typeof window !== "undefined") {
-            localStorage.setItem("token", token);
-            setToken(token);
-            localStorage.setItem("user", JSON.stringify(response.data.data));
-          }
-          setUser(response?.data?.data);
-          toast(response?.data?.message || response?.data?.message, {});
-          setTimeout(() => {
-            router.push("/");
-          }, 2000);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response?.data?.message || err?.message);
-      });
-
-    console.log(userData);
+    mutate();
   };
   return (
     <main className="w-full h-screen text-white bg-black flex flex-col justify-center items-center">
@@ -83,7 +85,7 @@ const Signin = () => {
             required
           />
           <button className="mt-[18px] rounded-md border bg-transparent py-[4px] px-[24px]">
-            Sign in
+            {isPending ? "Signing in..." : 'Sign in'}
           </button>
           <div className="text-white flex gap-x-[2px] text-[14px]">
             <span>Don&apos;t have an account?</span>

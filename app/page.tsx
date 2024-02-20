@@ -31,7 +31,6 @@ export type user = {
 };
 
 export default function Home() {
-  const [tweets, setTweets] = useState<TweetProps[]>([]);
   const { token, user } = useAuth();
   const [newTweet, setNewTweet] = useState<TweetProps>({
     _id: "",
@@ -43,6 +42,7 @@ export default function Home() {
   const router = useRouter();
   useEffect(() => {
     if (!token) {
+    console.log(token)
       router.push("/auth/signin");
     }
   }, []);
