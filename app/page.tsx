@@ -48,11 +48,15 @@ export default function Home() {
   }, []);
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const { data, error, isFetching } = useQuery({
+  const { data, error, isFetching, isSuccess } = useQuery({
     queryKey: ["allPosts"],
-    // queryFn: () => axios.get(`${apiUrl}/post`),
     queryFn: () => axios.get(`${apiUrl}/post`),
+    // queryFn: () => axios.get(`http://localhost:7000/api/post`),
+    refetchInterval: 100000,
+    refetchOnReconnect: 'always'
+    
   });
+  
   // console.log(data)
   // if (isFetching) {
   //   return (

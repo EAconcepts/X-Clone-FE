@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(token);
       setUser(userString !== null && JSON.parse(userString));
     }
-  }, []);
+  }, );
   return (
     <AuthContext.Provider value={{ token, setToken, user, setUser }}>
       {children}

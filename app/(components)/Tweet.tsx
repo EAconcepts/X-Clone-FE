@@ -15,12 +15,14 @@ import moment from "moment";
 import axios from "axios";
 import { useAuth } from "../(helpers)/authContext";
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   const { token, user } = useAuth();
   const headers = {
     Authorization: `Bearer ${token}`,
   };
+  const queryClient = useQueryClient()
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [hasLiked, setHasLiked] = useState<boolean>(false);
   const checkLike = () => {
@@ -36,25 +38,45 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   useEffect(() => {
     checkLike();
   }, []);
-  const handlePostLike = (postId: string) => {
-    axios
-      .post(`${apiUrl}/post/likes/${postId}`, "", { headers })
-      .then((response) => {
-        console.log(response);
-        if (response.status == 200) {
-          if (response.data.message.includes("Liked")) {
-            setHasLiked(true);
-          } else if (response.data.message.includes("Unliked")) {
-            setHasLiked(false);
-          }
-          toast.success(response.data.message);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error(error.message || error.response.message);
-      });
-  };
+  const { data, mutate } = useMutation({
+    mutationFn: (postId: string) =>
+      axios.post(`${apiUrl}/post/likes/${postId}`, "", { headers }),
+    onSuccess: async(data) => {
+      console.log(data)
+      if (data.data.message.includes("Liked")) {
+        setHasLiked(true);
+      } else if (data.data.message.includes("Unliked")) {
+        setHasLiked(false);
+      }
+      await queryClient.invalidateQueries({ queryKey: ["allPosts"] });
+      toast.success(data.data.message);
+    },
+  });
+  // const handlePostLike = (postId: string) => {
+  //   axios
+  //     .post(`${apiUrl}/post/likes/${postId}`, "", { headers })
+  //     .then((response) => {
+  //       console.log(response);
+  //       if (response.status == 200) {
+  //         if (response.data.message.includes("Liked")) {
+  //           setHasLiked(true);
+  //         } else if (response.data.message.includes("Unliked")) {
+  //           setHasLiked(false);
+  //         }
+  //         toast.success(response.data.message);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       toast.error(error.message || error.response.message);
+  //     });
+  // };
+    let hasImage = false 
+    tweet.images?.find((image)=>{
+      if( image !==null){
+        hasImage = true
+      }
+    })
   return (
     <div className="w-full flex flex-col border-b border-b-border">
       <div className="w-full flex items-start">
@@ -80,7 +102,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
           <div className="w-full px-[32px] pb-[8px]">
             {/* Images */}
             <div className="mt-[12px] grid grid-cols-2 place-items-center gap-[4px] border-[1px]  w-fit rounded-[16px] overflow-hidden justify-center">
-              {tweet?.images &&
+              {tweet?.images   && hasImage &&
                 tweet?.images?.length > 0 &&
                 tweet?.images?.map((img: string, index: number) => (
                   <Image
@@ -103,7 +125,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
                 <span>472</span>
               </div>
               <div
-                onClick={() => handlePostLike(tweet._id)}
+                onClick={() => mutate(tweet._id)}
                 className="flex gap-x-[5px] items-center cursor-pointer"
               >
                 {hasLiked ? (

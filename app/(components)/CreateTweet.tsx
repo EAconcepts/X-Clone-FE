@@ -54,7 +54,7 @@ const CreateTweet = ({
   const handleTweet = useMutation({
     mutationFn: () => {
       console.log(newTweet.images);
-      return axios.post(`${apiUrl}/post/create-post`, newTweet, { headers })
+      return axios.post(`${apiUrl}/post/create-post`, newTweet, { headers });
     },
     onError: (error) => {
       console.log("error", error);
@@ -77,24 +77,30 @@ const CreateTweet = ({
     handleTweet.mutate();
   };
   const onFIleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    const imageUrl: string | null = file && URL.createObjectURL(file);
+    const file = e.target.files && e.target.files;
+    if (!file) {
+      return;
+    }
+    const fileList = Array.from(file);
+    const imageUrl: string[] | null = fileList.map(
+      (image) => file && URL.createObjectURL(image)
+    );
     const newImages = [...images];
-    imageUrl && newImages.push(imageUrl);
+    imageUrl && newImages.push(...imageUrl);
     setImages(newImages);
 
     const formData = new FormData();
-    file && formData.append("image", file);
+    fileList && fileList.forEach((file)=> formData.append("image", file))
     console.log(file);
     if (file) {
       axios
         .post(`${apiUrl}/post/upload`, formData, { headers })
         .then((response) => {
-          console.log(response.data.data);
-        let url = response.data.data.url
-        let urlList: string[] = []
-        urlList.push(url)
-        console.log(urlList)
+          console.log(response.data);
+          let url = response.data.data;
+          let urlList: string[] = [];
+          urlList.push(...url);
+          console.log("urlList", urlList);
           setNewTweet((prevVals) => ({
             ...prevVals,
             images: urlList,
