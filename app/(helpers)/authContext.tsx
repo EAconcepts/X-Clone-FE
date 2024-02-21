@@ -18,10 +18,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      console.log('not undefined')
       let userString = localStorage.getItem("user");
       let tkn = localStorage.getItem("token");
-      console.log(tkn)
       setToken(tkn);
       setUser(userString !== null && JSON.parse(userString));
     }

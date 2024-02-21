@@ -11,11 +11,14 @@ import { GoHomeFill } from "react-icons/go";
 import { IoEllipsisHorizontal, IoNotifications } from "react-icons/io5";
 import avatarImg from "../(assets)/avatar.jpg";
 import { usePathname } from "next/navigation";
+import { Popover } from "@/components/ui/popover";
+import PopoverDialog from "./Popover";
 
-interface LinksProp {
+export interface LinksProp {
   title: string;
   icon: IconType;
   link: string;
+  linkFn?: ()=>void;
 }
 export const LeftMenu = () => {
   const navLinks: LinksProp[] = [
@@ -54,16 +57,27 @@ export const LeftMenu = () => {
       icon: CiUser,
       link: "#",
     },
-    {
-      title: "More",
-      icon: CiCircleMore,
-      link: "#",
-    },
+    // {
+    //   title: "More",
+    //   icon: CiCircleMore,
+    //   link: "#",
+    // },
   ];
+  const popoverLinks = [
+
+  ]
   const location = usePathname()
+  const popoverContent=(
+    <div></div>
+  )
   return (
-    <aside className={`${location.includes('/auth') && 'hidden'} w-[30%] relative border-r pl-[64px] pr-[24px] h-[100vh]  overflow-hidden xl:overflow-y-scroll flex flex-col pt-[8px] pb-[16px] `}>
+    <aside
+      className={`${
+        location.includes("/auth") && "hidden"
+      } w-[30%] hidden relative border-r pl-[64px] pr-[24px] h-[100vh]  overflow-hidden xl:overflow-y-scroll lg:flex flex-col pt-[8px] pb-[16px] `}
+    >
       <FaXTwitter size={28} />
+     
       <nav className="flex flex-col mt-[14px] md:gap-y-[14px] lg:gap-y-[16px] xl:gap-y-[18px] ">
         {navLinks?.map((item: LinksProp, index: number) => (
           <Link
@@ -74,6 +88,15 @@ export const LeftMenu = () => {
             <item.icon size={18} /> <span className="">{item.title}</span>
           </Link>
         ))}
+        <PopoverDialog
+          triggerText={
+            <div className="flex items-center gap-x-[12px] text-[12px] lg:text-[14px] xl:text-[16px]">
+              <CiCircleMore size={18} /> <span className="">More</span>
+            </div>
+          }
+        >
+          Children
+        </PopoverDialog>
         <Button className="w-full lg:text-[10px] xl:text-[16px] rounded-[20px] text-white">
           Post
         </Button>
