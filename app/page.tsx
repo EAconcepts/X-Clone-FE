@@ -58,7 +58,13 @@ export default function Home() {
     refetchInterval: 100000,
     refetchOnReconnect: "always",
   });
+useEffect(() => {
+  mainRef.current && mainRef.current.addEventListener("scroll", onScroll);
 
+  return () => {
+    mainRef.current && mainRef.current.removeEventListener("scroll", onScroll);
+  };
+}, []);
   // console.log(data)
   // if (isFetching) {
   //   return (
@@ -87,12 +93,7 @@ export default function Home() {
         lastScrollPos = currentPos;
       
   };
-  useEffect(()=> {
-     mainRef.current && mainRef.current.addEventListener("scroll", onScroll)
-
-    return ()=>{ 
-      mainRef.current && mainRef.current.removeEventListener('scroll', onScroll)}
-  }, []);
+  
   return (
     <main className="w-full flex h-screen  items-center justify-between ">
       <main
