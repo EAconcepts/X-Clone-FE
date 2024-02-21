@@ -76,8 +76,6 @@ export default function Home() {
   let lastScrollPos = mainRef.current && mainRef.current.scrollTop;
 
   const onScroll = () => {
-    mainRef.current &&
-      mainRef.current.addEventListener("scroll", (e) => {
         const currentPos = mainRef.current && mainRef.current?.scrollTop;
         // console.log(currentPos, lastScrollPos);
         if (currentPos && lastScrollPos && currentPos > lastScrollPos)
@@ -87,10 +85,12 @@ export default function Home() {
         if(currentPos && currentPos <=10) setScrollTopPos(true)
         else if(currentPos && currentPos >10) setScrollTopPos(false)
         lastScrollPos = currentPos;
-      });
+      
   };
   useEffect(() => {
-    onScroll();
+    // onScroll();
+     mainRef.current && mainRef.current.addEventListener("scroll", onScroll)
+
   }, []);
   return (
     <main className="w-full flex h-screen  items-center justify-between ">
