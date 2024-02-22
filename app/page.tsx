@@ -3,7 +3,7 @@
 import Image from "next/image";
 import TopNav from "./(components)/TopNav";
 import CreateTweet from "./(components)/CreateTweet";
-import Tweet from "./(components)/Tweet";
+import Tweet from "./(components)/(tweets)/Tweet";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import image1 from "./(assets)/chicken.jpg";
 import image2 from "./(assets)/images2.jpeg";
@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Footer from "./(components)/Footer";
+import FloatingButton from "./(components)/FloatingButton";
 
 export interface TweetProps {
   _id: string;
@@ -43,7 +44,7 @@ export default function Home() {
   const router = useRouter();
   const mainRef: LegacyRef<HTMLElement> = useRef(null);
   const [scrollPos, setScrollPos] = useState<string>("");
-  const [scrollTopPos, setScrollTopPos] = useState<boolean>(true)
+  const [scrollTopPos, setScrollTopPos] = useState<boolean>(true);
   // useEffect(() => {
   //   if (!token) {
   //   console.log(token)
@@ -58,13 +59,14 @@ export default function Home() {
     refetchInterval: 100000,
     refetchOnReconnect: "always",
   });
-useEffect(() => {
-  mainRef.current && mainRef.current.addEventListener("scroll", onScroll);
+  useEffect(() => {
+    mainRef.current && mainRef.current.addEventListener("scroll", onScroll);
 
-  return () => {
-    mainRef.current && mainRef.current.removeEventListener("scroll", onScroll);
-  };
-}, []);
+    return () => {
+      mainRef.current &&
+        mainRef.current.removeEventListener("scroll", onScroll);
+    };
+  }, []);
   // console.log(data)
   // if (isFetching) {
   //   return (
@@ -82,18 +84,17 @@ useEffect(() => {
   let lastScrollPos = mainRef.current && mainRef.current.scrollTop;
 
   const onScroll = () => {
-        const currentPos = mainRef.current && mainRef.current?.scrollTop;
-        // console.log(currentPos, lastScrollPos);
-        if (currentPos && lastScrollPos && currentPos > lastScrollPos)
-          setScrollPos("up");
-        if (currentPos && lastScrollPos && currentPos < lastScrollPos)
-          setScrollPos("down");
-        if(currentPos && currentPos <=10) setScrollTopPos(true)
-        else if(currentPos && currentPos >10) setScrollTopPos(false)
-        lastScrollPos = currentPos;
-      
+    const currentPos = mainRef.current && mainRef.current?.scrollTop;
+    // console.log(currentPos, lastScrollPos);
+    if (currentPos && lastScrollPos && currentPos > lastScrollPos)
+      setScrollPos("up");
+    if (currentPos && lastScrollPos && currentPos < lastScrollPos)
+      setScrollPos("down");
+    if (currentPos && currentPos <= 10) setScrollTopPos(true);
+    else if (currentPos && currentPos > 10) setScrollTopPos(false);
+    lastScrollPos = currentPos;
   };
-  
+
   return (
     <main className="w-full flex h-screen  items-center justify-between ">
       <main
@@ -110,6 +111,7 @@ useEffect(() => {
           ))}
         </div>
       </main>
+      <FloatingButton />
       <Footer scrollPos={scrollPos} />
       <aside className=" w-[70%] hidden h-full lg:flex flex-col overflow-hidden overflow-y-scroll"></aside>
     </main>

@@ -2,10 +2,10 @@
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect, useState } from "react";
-import avatarImg from "../(assets)/avatar.jpg";
+import avatarImg from "../../(assets)/avatar.jpg";
 import { LuDot } from "react-icons/lu";
 import Image from "next/image";
-import { TweetProps, user } from "../page";
+import { TweetProps, user } from "../../page";
 import { BiMessageRounded } from "react-icons/bi";
 import { FaBookmark, FaHeart, FaRegHeart, FaRetweet } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
@@ -13,18 +13,20 @@ import { IoBookmarkOutline, IoStatsChart } from "react-icons/io5";
 import { FiUpload } from "react-icons/fi";
 import moment from "moment";
 import axios from "axios";
-import { useAuth } from "../(helpers)/authContext";
+import { useAuth } from "../../(helpers)/authContext";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   const { token, user } = useAuth();
   const headers = {
     Authorization: `Bearer ${token}`,
   };
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [hasLiked, setHasLiked] = useState<boolean>(false);
+  const router = useRouter()
   const checkLike = () => {
     tweet.likedBy &&
       tweet.likedBy.find((item) => {
@@ -41,8 +43,8 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   const { data, mutate } = useMutation({
     mutationFn: (postId: string) =>
       axios.post(`${apiUrl}/post/likes/${postId}`, "", { headers }),
-    onSuccess: async(data) => {
-      console.log(data)
+    onSuccess: async (data) => {
+      console.log(data);
       if (data.data.message.includes("Liked")) {
         setHasLiked(true);
       } else if (data.data.message.includes("Unliked")) {
@@ -71,57 +73,70 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
   //       toast.error(error.message || error.response.message);
   //     });
   // };
-    let hasImage = false 
-    tweet.images?.find((image)=>{
-      if( image !==null){
-        hasImage = true
-      }
-    })
+  let hasImage = false;
+  tweet.images?.find((image) => {
+    if (image !== null) {
+      hasImage = true;
+    }
+  });
   return (
     <div className="w-full flex flex-col border-b border-b-border">
       <div className="w-full flex items-start">
-        <Avatar className="w-[28px] h-[28px]">
+        {/* Avatar */}
+        <Avatar className=" size-[30px] lg:w-[28px] lg:h-[28px]">
           <AvatarImage src={avatarImg.src} className="object-cover" />
         </Avatar>
         {/* Tweet */}
         <div className=" w-full flex flex-col px-[8px]">
           {/* handle */}
-          <div className="flex items-center gap-x-[4px] text-[12px] xl:text-[14px]">
+          <div className="flex lg:flex-row flex-col lg:items-center gap-y-[2px] lg:gap-[4px] text-[14px] xl:text-[16px]">
             <span className="">{tweet?.user?.name}</span>
-            <span className="text-primary-foreground">
-              @{tweet.user.username}
-            </span>
-            <LuDot className="" />
-            <span>{tweet.tweetTime && moment(tweet?.tweetTime).fromNow()}</span>
+            <div className="flex flex-row gap-x-[4px]">
+              <span className="text-primary-foreground">
+                @{tweet.user.username}
+              </span>
+              <LuDot size={16} className="" />
+              <span className="max-lg:text-primary-foreground">
+                {tweet.tweetTime && moment(tweet?.tweetTime).fromNow()}
+              </span>
+            </div>
           </div>
-          <pre className="text-wrap mt-[4px] text-[12px] font-sans">
+          {/* TWEET */}
+          <pre
+            onClick={() => router.push(`/${tweet.user.username}/${tweet._id}`)}
+            className="text-wrap mt-[4px] text-[12px] font-sans"
+          >
             {tweet.content.length > 200
               ? tweet.content.slice(0, 200) + "..."
               : tweet.content}
           </pre>
-          <div className="w-full px-[32px] pb-[8px]">
+          <div className="w-full lg:px-[32px] pb-[8px]">
             {/* Images */}
-            <div className="mt-[12px] grid grid-cols-2 place-items-center gap-[4px] border-[1px]  w-fit rounded-[16px] overflow-hidden justify-center">
-              {tweet?.images   && hasImage &&
-                tweet?.images?.length > 0 &&
-                tweet?.images?.map((img: string, index: number) => (
-                  <Image
-                    key={index}
-                    src={img}
-                    alt={"img"}
-                    height={300}
-                    width={300}
-                    className="w-[200px] h-[120px] object-cover"
-                  />
-                ))}
-            </div>
-            <div className="w-full flex text-[10px] xl:text-[12px] justify-between mt-[16px]">
+            {hasImage && tweet?.images && tweet?.images?.length > 0 && (
+              <div className="mt-[12px] flex flex-wr place-items-center gap-[4px] border-[1px] h-[150px] max-w-[]  w-full rounded-[16px] overflow-hidden justify-center">
+                {tweet?.images &&
+                  hasImage &&
+                  tweet?.images?.length > 0 &&
+                  tweet?.images?.map((img: string, index: number) => (
+                    <Image
+                      key={index}
+                      src={img}
+                      alt={"img"}
+                      height={300}
+                      width={300}
+                      className="w[200px] w-full h-full  object-cover"
+                    />
+                  ))}
+              </div>
+            )}
+            {/* Icons */}
+            <div className="w-full flex justify-end gap-x-[8px] text-[12px] xl:text-[12px] lg:justify-between mt-[16px]">
               <div className="flex gap-x-[5px] items-center cursor-pointer">
-                <BiMessageRounded />
+                <BiMessageRounded size={18} />
                 <span>1.2k</span>
               </div>
               <div className="flex gap-x-[5px] items-center cursor-pointer">
-                <FaRetweet />
+                <FaRetweet size={18} />
                 <span>472</span>
               </div>
               <div
@@ -129,26 +144,26 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
                 className="flex gap-x-[5px] items-center cursor-pointer"
               >
                 {hasLiked ? (
-                  <FaHeart className="text-red-600`" />
+                  <FaHeart className="text-red-600" size={18} />
                 ) : (
-                  <FaRegHeart />
+                  <FaRegHeart size={18} />
                 )}
                 <span> {tweet.likedBy?.length}</span>
               </div>
               <div className="flex gap-x-[5px] items-center cursor-pointer">
-                <FaRetweet />
+                <FaRetweet size={18} />
                 <span>1.2k</span>
               </div>
               <div className="flex gap-x-[5px] items-center cursor-pointer">
-                <IoStatsChart />
+                <IoStatsChart size={18} />
                 <span>1.2k</span>
               </div>
-              <div className="flex gap-x-[8px] items-center cursor-pointer">
+              <div className="lg:flex hidden gap-x-[8px] items-center cursor-pointer">
                 {
-                  <IoBookmarkOutline />
+                  <IoBookmarkOutline size={18} />
                   // <FaBookmark />
                 }
-                <FiUpload />
+                <FiUpload size={18} />
               </div>
             </div>
           </div>
