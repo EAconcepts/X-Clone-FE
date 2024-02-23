@@ -27,37 +27,38 @@ const Signup = () => {
     const { name, value } = e.target;
     setUser((prevVals) => ({ ...prevVals, [name]: value }));
   };
- 
 
   const { data, mutate, isPending } = useMutation({
     mutationFn: () => axios.post(`${apiUrl}/auth/signup`, user),
-    onSuccess: (data)=>{
-      console.log(data)
-        toast(data?.data?.message || data?.data?.message);
+    onSuccess: (data) => {
+      console.log(data);
+      toast(data?.data?.message || data?.data?.message);
     },
-    onError:(error:any)=>{
-      console.log(error)
-        toast.error(error.response?.data?.message || error?.message);
-    }
+    onError: (error: any) => {
+      console.log(error);
+      toast.error(error.response?.data?.message || error?.message);
+    },
   });
-   const handleSignup = (e: any) => {
-     e.preventDefault();
-     mutate();
-   };
+  const handleSignup = (e: any) => {
+    e.preventDefault();
+    mutate();
+  };
   return (
     <main className="w-full h-screen bg-black flex flex-col justify-center items-center">
       <Toaster />
-      <div className="max-w-[70%] w-[50%] border rounded-lg  flex bg-black p-[32px] shadow-md shadow-slate-900">
+      <div className="max-w-[90%] lg:max-w-[70%] w-[85%] lg:w-[50%] border rounded-lg  flex bg-black px-[8px] py-[16px] lg:p-[32px] shadow-md shadow-slate-900">
         <form
           onSubmit={handleSignup}
           className=" w-full flex flex-col items-center text-white p-4 gap-y-[16px] "
         >
-          <h2 className="mb-[12px] text-[20px] font-bold">Create an account</h2>
+          <h2 className=" mb-[8px] lg:mb-[12px] text-[18px] lg:text-[20px] font-bold">
+            Create an account
+          </h2>
           <input
             type="text"
             placeholder="Name"
             name="name"
-            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-full lg:w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.name}
             onChange={handleOnChange}
             required
@@ -66,7 +67,7 @@ const Signup = () => {
             type="email"
             placeholder="Email"
             name="email"
-            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-full lg:w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.email}
             onChange={handleOnChange}
             required
@@ -75,7 +76,7 @@ const Signup = () => {
             type="text"
             placeholder="username"
             name="username"
-            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-full lg:w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.username}
             onChange={handleOnChange}
             required
@@ -84,7 +85,7 @@ const Signup = () => {
             type="password"
             placeholder="Password"
             name="password"
-            className={`w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
+            className={`w-full lg:w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.password}
             onChange={handleOnChange}
             required
