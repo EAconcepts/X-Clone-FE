@@ -20,14 +20,16 @@ import Image from "next/image";
 import { BiMessageRounded } from "react-icons/bi";
 import { FaHeart, FaRegHeart, FaRetweet } from "react-icons/fa6";
 import { FiUpload } from "react-icons/fi";
+import ViewImages from "@/app/(components)/(tweets)/ViewImages";
 
 const ViewTweet = () => {
+  const [showImages, setShowImages] = useState<boolean>(false);
   const tweetId = useParams().id;
   const queryClient = useQueryClient();
   const router = useRouter();
   const retrievedData: any = queryClient.getQueryData(["allPosts"]);
   let tweets: TweetProps[] = retrievedData && retrievedData?.data?.data;
-  console.log(tweets);
+  // console.log(tweets);
   const tweet = tweets && tweets.find((item) => tweetId === item._id);
 
   const { token, user } = useAuth();
@@ -73,6 +75,7 @@ const ViewTweet = () => {
     });
   return (
     <div>
+      {showImages && <ViewImages setShowImages = {setShowImages} hasLiked={hasLiked} tweet={tweet} mutate={mutate} images={tweet?.images} />}
       {/* Top Nav */}
       <nav className="bg-transparent w-full sticky top-0  h-[52px] py-[8px] px-[16px] backdrop-blur-sm">
         <div
@@ -92,7 +95,7 @@ const ViewTweet = () => {
               <AvatarImage src={avatarImg.src} className="object-cover" />
             </Avatar>
             {/* Tweet */}
-            <div className=" w-full flex flex-col px-[8px]">
+            <div className=" w-full flex flex-col px-[4px]">
               {/* handle */}
               <div className="flex lg:flex-row flex-col lg:items-center gap-y-[2px] lg:gap-[4px] text-[14px] xl:text-[16px]">
                 <span className="">{tweet?.user?.name}</span>
@@ -123,6 +126,7 @@ const ViewTweet = () => {
                       tweet?.images?.length > 0 &&
                       tweet?.images?.map((img: string, index: number) => (
                         <Image
+                          onClick={() => setShowImages(true)}
                           key={index}
                           src={img}
                           alt={"img"}

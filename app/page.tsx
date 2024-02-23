@@ -15,6 +15,7 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Footer from "./(components)/Footer";
 import FloatingButton from "./(components)/FloatingButton";
+import ViewImages from "./(components)/(tweets)/ViewImages";
 
 export interface TweetProps {
   _id: string;
@@ -34,6 +35,7 @@ export type user = {
 
 export default function Home() {
   const { token, user } = useAuth();
+
   const [newTweet, setNewTweet] = useState<TweetProps>({
     _id: "",
     tweetTime: new Date().toUTCString(),
@@ -78,14 +80,15 @@ export default function Home() {
   if (error) {
     console.log(error);
     return (
-      <p className="fixed top-[50%] left-[50%] m-auto">Error fetching posts!</p>
+      <p className="fixed top-[50%] text-center left-[50%] m-auto">
+        Error fetching posts!
+      </p>
     );
   }
   let lastScrollPos = mainRef.current && mainRef.current.scrollTop;
 
   const onScroll = () => {
     const currentPos = mainRef.current && mainRef.current?.scrollTop;
-    // console.log(currentPos, lastScrollPos);
     if (currentPos && lastScrollPos && currentPos > lastScrollPos)
       setScrollPos("up");
     if (currentPos && lastScrollPos && currentPos < lastScrollPos)
