@@ -5,8 +5,11 @@ import { RiLeafLine } from "react-icons/ri";
 
 const FloatingButton = () => {
   return (
-    <Link href='/compose/post'  className="size-[64px] fixed flex items-center justify-center bottom-[90px] right-[35px] rounded-full p-[8px] bg-secondary-foreground text-white">
-      <BsPlus size={14} />
+    <Link
+      href="/compose/post"
+      className="lg:hidden size-[60px] fixed flex items-center justify-center bottom-[90px] right-[35px] rounded-full p-[7px] bg-lightBlue text-white"
+    >
+      <BsPlus size={16} className="" />
       <RiLeafLine size={24} />
     </Link>
   );
