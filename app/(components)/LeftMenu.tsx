@@ -74,9 +74,9 @@ export const LeftMenu = () => {
     <aside
       className={`${
         location.includes("/auth") && "hidden"
-      } w-[30%] hidden relative border-r pl-[64px] pr-[24px] h-[100vh]  overflow-hidden xl:overflow-y-scroll lg:flex flex-col pt-[8px] pb-[16px] `}
+      } w-[30%] hidden relative border-r pl-[64px] pr-[24px] h-[100vh]  overflow-hidden xl:overflow-y-scroll lg:flex flex-col pt-[8px] pb-[16px] z-20 `}
     >
-      <FaXTwitter size={28} />
+      <FaXTwitter size={28} className="z-[999]" />
      
       <nav className="flex flex-col mt-[14px] md:gap-y-[14px] lg:gap-y-[16px] xl:gap-y-[18px] ">
         {navLinks?.map((item: LinksProp, index: number) => (

@@ -17,7 +17,7 @@ const TopNav = ({ scrollTopPos }: { scrollTopPos: boolean }) => {
   return (
     <nav
       className={`w-full sticky top-0 z-10 bg-transparent pt-[4px] px-[24px] lg:px-[24px] h-[80px] lg:h-[40px] border-b border-b-border flex flex-col lg:flex-row  lg:items-center justify-between lg:pl-[32px] max-lg:bg-gradient-to-b from-black to-slate-500/10 max-lg:mb-[8px] transition-all duration-700 ${
-        !scrollTopPos && "translate-y-[-100px]"
+        !scrollTopPos && "max-lg:translate-y-[-100px]"
       }`}
     >
       <div className="w-full z-10 flex lg:hidden justify-between mb-[18px]">
