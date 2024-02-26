@@ -12,7 +12,7 @@ import image4 from "./(assets)/images2.jpeg";
 import { useAuth } from "./(helpers)/authContext";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import Footer from "./(components)/Footer";
 import FloatingButton from "./(components)/FloatingButton";
 import ViewImages from "./(components)/(tweets)/ViewImages";
@@ -43,10 +43,15 @@ export default function Home() {
     content: "",
     images: [],
   });
-  const router = useRouter();
-  const mainRef: LegacyRef<HTMLElement> = useRef(null);
   const [scrollPos, setScrollPos] = useState<string>("");
   const [scrollTopPos, setScrollTopPos] = useState<boolean>(true);
+  const mainRef: LegacyRef<HTMLElement> = useRef(null);
+  
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
+  let lastScrollPos = mainRef.current && mainRef.current.scrollTop;
+
+
   // useEffect(() => {
   //   if (!token) {
   //   console.log(token)
@@ -54,13 +59,29 @@ export default function Home() {
   //   }
   // }, []);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  
+  // Fetch tweets
   const { data, error, isFetching, isSuccess } = useQuery({
     queryKey: ["allPosts"],
     queryFn: () => axios.get(`${apiUrl}/post`),
     refetchInterval: 100000,
     refetchOnReconnect: "always",
   });
+
+  // DO NOT DELETE
+  // const { data, error, isFetching, isSuccess } = useInfiniteQuery({
+  //   queryKey: ["allPosts"],
+  //   queryFn: async ({ pageParam }) =>
+  //     axios.get(`http://localhost:7000/api/post?page=${pageParam}&limit=10`),
+  //   // queryFn: () => axios.get(`${apiUrl}/post`),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage) => null,
+  //   // refetchInterval: 100000,
+  //   // refetchOnReconnect: "always",
+  // });
+
+  //Monitor scroll behaviour
+  
   useEffect(() => {
     mainRef.current && mainRef.current.addEventListener("scroll", onScroll);
 
@@ -69,14 +90,8 @@ export default function Home() {
         mainRef.current.removeEventListener("scroll", onScroll);
     };
   }, []);
-  // console.log(data)
-  // if (isFetching) {
-  //   return (
-  //     <p className="fixed top-[50%] left-[50%] m-auto">
-  //       loading<span className="animate-pulse">...</span>
-  //     </p>
-  //   );
-  // }
+ 
+  
   if (error) {
     console.log(error);
     return (
@@ -85,8 +100,8 @@ export default function Home() {
       </p>
     );
   }
-  let lastScrollPos = mainRef.current && mainRef.current.scrollTop;
 
+// Determine if scroll direction is up or down
   const onScroll = () => {
     const currentPos = mainRef.current && mainRef.current?.scrollTop;
     if (currentPos && lastScrollPos && currentPos > lastScrollPos)
@@ -116,6 +131,7 @@ export default function Home() {
       </main>
       <FloatingButton />
       <Footer scrollPos={scrollPos} />
+      {/* Last column on Desktop view */}
       <aside className=" w-[70%] hidden h-full lg:flex flex-col overflow-hidden overflow-y-scroll"></aside>
     </main>
   );
