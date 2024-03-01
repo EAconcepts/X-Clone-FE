@@ -6,7 +6,6 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Interface } from "readline";
 import { Toaster, toast } from "sonner";
 
 interface UserProps {
@@ -31,6 +30,7 @@ const Signin = () => {
   const { isPending, mutate } = useMutation({
     mutationFn: () => axios.post(`${apiUrl}/auth/signin`, userData),
     onSuccess: (data) => {
+      console.log(data)
       if (data.status === 200) {
         let token = data?.data?.token;
         if (typeof window !== "undefined") {
@@ -43,6 +43,9 @@ const Signin = () => {
         setTimeout(() => {
           router.push("/");
         }, 1000);
+      }
+      if (data.status === 300) {
+        toast.warning(data?.data?.message);
       }
     },
     onError: (error: any, variables, context) => {
