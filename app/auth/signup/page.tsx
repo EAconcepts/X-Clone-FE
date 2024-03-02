@@ -41,7 +41,11 @@ const Signup = () => {
   });
   const handleSignup = (e: any) => {
     e.preventDefault();
-    mutate();
+    if (user.username && !/^\w+$/.test(user?.username)) {
+      toast.warning("Username should not contain spaces or special characters");
+    } else {
+      mutate();
+    }
   };
   return (
     <main className="w-full h-screen bg-black flex flex-col justify-center items-center">
@@ -76,6 +80,7 @@ const Signup = () => {
             type="text"
             placeholder="username"
             name="username"
+            maxLength={16}
             className={`w-full lg:w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.username}
             onChange={handleOnChange}
@@ -85,6 +90,8 @@ const Signup = () => {
             type="password"
             placeholder="Password"
             name="password"
+            minLength={4}
+            maxLength={16}
             className={`w-full lg:w-[60%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={user.password}
             onChange={handleOnChange}
