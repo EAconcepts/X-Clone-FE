@@ -46,20 +46,18 @@ export default function Home() {
   const [scrollPos, setScrollPos] = useState<string>("");
   const [scrollTopPos, setScrollTopPos] = useState<boolean>(true);
   const mainRef: LegacyRef<HTMLElement> = useRef(null);
-  
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   let lastScrollPos = mainRef.current && mainRef.current.scrollTop;
 
+  useEffect(() => {
+    if (!token) {
+      console.log(token);
+      // router.push("/auth/signin");
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   if (!token) {
-  //   console.log(token)
-  //     router.push("/auth/signin");
-  //   }
-  // }, []);
-
-  
   // Fetch tweets
   const { data, error, isFetching, isSuccess } = useQuery({
     queryKey: ["allPosts"],
@@ -81,7 +79,7 @@ export default function Home() {
   // });
 
   //Monitor scroll behaviour
-  
+
   useEffect(() => {
     mainRef.current && mainRef.current.addEventListener("scroll", onScroll);
 
@@ -90,8 +88,7 @@ export default function Home() {
         mainRef.current.removeEventListener("scroll", onScroll);
     };
   }, []);
- 
-  
+
   if (error) {
     console.log(error);
     return (
@@ -101,7 +98,7 @@ export default function Home() {
     );
   }
 
-// Determine if scroll direction is up or down
+  // Determine if scroll direction is up or down
   const onScroll = () => {
     const currentPos = mainRef.current && mainRef.current?.scrollTop;
     if (currentPos && lastScrollPos && currentPos > lastScrollPos)
