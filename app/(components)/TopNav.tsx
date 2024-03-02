@@ -21,7 +21,7 @@ const TopNav = ({ scrollTopPos }: { scrollTopPos: boolean }) => {
     setActiveTab("following");
   };
   const signOut = () => {
-    router.push("/auth/siginin");
+    router.push("/auth/signin");
     localStorage.clear();
     setToken(null);
     toast.success('Logout successful')
