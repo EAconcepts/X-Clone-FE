@@ -41,7 +41,7 @@ const Signin = () => {
         setUser(data?.data?.data);
         toast(data?.data?.message || data?.data?.message, {});
         setTimeout(() => {
-          router.push("/");
+          router.push("/", {scroll:false});
         }, 1000);
       }
       if (data.status === 300) {

@@ -52,12 +52,12 @@ export default function Home() {
   let lastScrollPos = mainRef.current && mainRef.current.scrollTop;
 
 
-  // useEffect(() => {
-  //   if (!token) {
-  //   console.log(token)
-  //     router.push("/auth/signin");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!token) {
+    console.log(token)
+      // router.push("/auth/signin");
+    }
+  }, []);
 
   
   // Fetch tweets
