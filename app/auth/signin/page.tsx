@@ -68,8 +68,8 @@ const Signin = () => {
             Login to your acoount
           </h2>
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Email or Username"
             name="email"
             className={`w-full lg:w-[50%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={userData.email}
