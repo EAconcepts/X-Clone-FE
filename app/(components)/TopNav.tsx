@@ -5,14 +5,26 @@ import { useState } from "react";
 import { CiSettings } from "react-icons/ci";
 import avatarImg from "../(assets)/avatar.jpg";
 import { FaXTwitter } from "react-icons/fa6";
+import { useAuth } from "../(helpers)/authContext";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const TopNav = ({ scrollTopPos }: { scrollTopPos: boolean }) => {
   const [activeTab, setActiveTab] = useState<string>("for you");
   const handleForYouTab = () => {
     setActiveTab("for you");
   };
+  const { token, setToken } = useAuth();
+  const router = useRouter()
+
   const handleFollowingTab = () => {
     setActiveTab("following");
+  };
+  const signOut = () => {
+    router.push("/auth/siginin");
+    localStorage.clear();
+    setToken(null);
+    toast.success('Logout successful')
   };
   return (
     <nav
@@ -26,7 +38,7 @@ const TopNav = ({ scrollTopPos }: { scrollTopPos: boolean }) => {
         </Avatar>
         <FaXTwitter size={28} />
         <button className="block lg:hidden">
-          <CiSettings size={20} color="white" />
+          <CiSettings onClick={signOut} size={20} color="white" />
         </button>
       </div>
       <div className="fixed top-0 left-0   w-full h-[80px] lg:h-[40px] backdrop-blur"></div>
