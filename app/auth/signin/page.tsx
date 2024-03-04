@@ -49,6 +49,7 @@ const Signin = () => {
       }
     },
     onError: (error: any, variables, context) => {
+      console.log(error)
       toast.error(error.response?.data?.message || error?.message);
     },
   });
