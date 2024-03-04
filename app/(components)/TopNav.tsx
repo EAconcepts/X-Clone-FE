@@ -68,7 +68,7 @@ const TopNav = ({ scrollTopPos }: { scrollTopPos: boolean }) => {
   };
   const queryAvatar = () => {
     axios
-      .get(`http://localhost:7000/api/auth/me`, { headers })
+      .get(`${apiUrl}/auth/me`, { headers })
       .then((response) => {
         console.log(response);
         let newUser = response.data?.data;
@@ -84,7 +84,7 @@ const TopNav = ({ scrollTopPos }: { scrollTopPos: boolean }) => {
   const uploadAvatarUrl = useMutation({
     mutationFn: (url) =>
       axios.post(
-        `http://localhost:7000/api/profile/avatar-upload`,
+        `${apiUrl}/profile/avatar-upload`,
         { avatar: url },
         { headers }
       ),
@@ -99,7 +99,7 @@ const TopNav = ({ scrollTopPos }: { scrollTopPos: boolean }) => {
   });
   const uploadAvatar = useMutation({
     mutationFn: (formData: FormData) =>
-      axios.post(`http://localhost:7000/api/file/upload`, formData, {
+      axios.post(`${apiUrl}/file/upload`, formData, {
         headers,
       }),
     onSuccess(data, variables, context) {
