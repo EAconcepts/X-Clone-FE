@@ -79,7 +79,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
       <div className="w-full flex items-start">
         {/* Avatar */}
         <Avatar className=" size-[30px] lg:w-[28px] lg:h-[28px]">
-          <AvatarImage src={avatarImg.src} className="object-cover" />
+          <AvatarImage src={tweet?.user?.avatar ? tweet?.user?.avatar :  avatarImg.src} className="object-cover" />
         </Avatar>
         {/* Tweet */}
         <div className=" w-full flex flex-col px-[8px]">

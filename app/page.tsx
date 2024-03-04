@@ -16,6 +16,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import Footer from "./(components)/Footer";
 import FloatingButton from "./(components)/FloatingButton";
 import ViewImages from "./(components)/(tweets)/ViewImages";
+import { toast } from "sonner";
 
 export interface TweetProps {
   _id: string;
@@ -31,6 +32,7 @@ export type user = {
   email?: string;
   __v?: number;
   username?: string;
+  avatar?: string
 };
 
 export default function Home() {
@@ -59,7 +61,7 @@ export default function Home() {
   }, []);
 
   // Fetch tweets
-  const { data, error, isFetching, isSuccess } = useQuery({
+  const { data, error, isFetching, isSuccess, isRefetching } = useQuery({
     queryKey: ["allPosts"],
     queryFn: () => axios.get(`${apiUrl}/post`),
     refetchInterval: 100000,
@@ -79,7 +81,6 @@ export default function Home() {
   // });
 
   //Monitor scroll behaviour
-
   useEffect(() => {
     mainRef.current && mainRef.current.addEventListener("scroll", onScroll);
 
@@ -89,13 +90,14 @@ export default function Home() {
     };
   }, []);
 
-  if (error) {
+  if (!isRefetching && error) {
     console.log(error);
-    return (
-      <p className="fixed top-[50%] text-center left-[50%] m-auto">
-        Error fetching posts!
-      </p>
-    );
+    toast.error("Error fetchig tweets!")
+    // return (
+    //   <p className="fixed top-[50%] text-center left-[50%] m-auto">
+    //     Error fetching posts!
+    //   </p>
+    // );
   }
 
   // Determine if scroll direction is up or down
