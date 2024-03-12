@@ -86,7 +86,7 @@ const NewComment = () => {
                   Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                   Ipsa, nulla? Explicabo odit deleniti, facilis quidem commodi
                 </p>
-                <p>#DAYO'2024</p>
+                <p>#DAYO&apos;2024</p>
                 <p>#weddingsbells</p>
                 <p>#IWD</p>
                 <p className="text-sm mt-5 text-[#e1e1e1]">
