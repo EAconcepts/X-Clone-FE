@@ -94,7 +94,7 @@ const CreateTweet = ({
     console.log(file);
     if (file) {
       axios
-        .post(`${apiUrl}/post/upload`, formData, { headers })
+        .post(`${apiUrl}/file/upload`, formData, { headers })
         .then((response) => {
           console.log(response.data);
           let url = response.data.data;

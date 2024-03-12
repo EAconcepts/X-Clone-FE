@@ -79,7 +79,7 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
       <div className="w-full flex items-start">
         {/* Avatar */}
         <Avatar className=" size-[30px] lg:w-[28px] lg:h-[28px]">
-          <AvatarImage src={avatarImg.src} className="object-cover" />
+          <AvatarImage src={tweet?.user?.avatar ? tweet?.user?.avatar :  avatarImg.src} className="object-cover" />
         </Avatar>
         {/* Tweet */}
         <div className=" w-full flex flex-col px-[8px]">
@@ -138,7 +138,13 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
                 <span>472</span>
               </div>
               <div
-                onClick={() => mutate(tweet._id)}
+                onClick={() => {
+                  if (token) {
+                    mutate(tweet._id);
+                  } else {
+                    router.push("/auth/signin");
+                  }
+                }}
                 className="flex gap-x-[5px] items-center cursor-pointer"
               >
                 {hasLiked ? (

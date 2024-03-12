@@ -6,7 +6,6 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Interface } from "readline";
 import { Toaster, toast } from "sonner";
 
 interface UserProps {
@@ -31,6 +30,7 @@ const Signin = () => {
   const { isPending, mutate } = useMutation({
     mutationFn: () => axios.post(`${apiUrl}/auth/signin`, userData),
     onSuccess: (data) => {
+      console.log(data);
       if (data.status === 200) {
         let token = data?.data?.token;
         if (typeof window !== "undefined") {
@@ -41,11 +41,15 @@ const Signin = () => {
         setUser(data?.data?.data);
         toast(data?.data?.message || data?.data?.message, {});
         setTimeout(() => {
-          router.push("/");
+          router.push("/", { scroll: false });
         }, 1000);
+      }
+      if (data.status === 300) {
+        toast.warning(data?.data?.message);
       }
     },
     onError: (error: any, variables, context) => {
+      console.log(error)
       toast.error(error.response?.data?.message || error?.message);
     },
   });
@@ -65,8 +69,8 @@ const Signin = () => {
             Login to your acoount
           </h2>
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Email or Username"
             name="email"
             className={`w-full lg:w-[50%] bg-transparent h-12 rounded-md border-[0.4px] placeholder-gray outline-none pl-4 `}
             value={userData.email}
@@ -82,6 +86,12 @@ const Signin = () => {
             onChange={handleOnChange}
             required
           />
+          <Link
+            href={"/auth/forgot-password"}
+            className="text-[12px] text-end mt-[-8px] w-full"
+          >
+            Forgot Password
+          </Link>
           <button className="mt-[18px] rounded-md border bg-transparent py-[4px] px-[24px]">
             {isPending ? "Signing in..." : "Sign in"}
           </button>
