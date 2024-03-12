@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import ViewImages from "./ViewImages";
 
 const Tweet = ({ tweet }: { tweet: TweetProps }) => {
-  const { token, user } = useAuth();
+  const { token, user } = useAuth(); 
   const [showImages, setShowImages] = useState<boolean>(false);
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -128,7 +128,9 @@ const Tweet = ({ tweet }: { tweet: TweetProps }) => {
             {/* Icons */}
             <div className="w-full flex justify-end gap-x-[8px] text-[12px] xl:text-[12px] lg:justify-between mt-[16px]">
               <div className="flex gap-x-[5px] items-center cursor-pointer">
-                <BiMessageRounded size={18} />
+                <BiMessageRounded 
+                onClick={() => router.push(`/compose/post/comment/${tweet._id}`)} 
+                size={18} />
                 <span>1.2k</span>
               </div>
               <div className="flex gap-x-[5px] items-center cursor-pointer">
